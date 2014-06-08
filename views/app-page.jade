@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  div.container(ng-controller='AppCtrl')
+    h1
+      a(href='http://steamcommunity.com/market/search?q=appid:#{appInfo._id}') #{appInfo.name}
+    hr
+    div.row
+      div.col-md-2
+        p.lead Total sold
+        p= appInfo.sold
+      div.col-md-2
+        p.lead Total Profit
+        p(ng-init='profit=#{appInfo.profit}') {{ profit | currency }}
+      div.col-md-3
+        p.lead Total Total sold for
+        p(ng-init='total=#{appInfo.total}') {{ total | currency }}
+    br
+    include includes/transactions

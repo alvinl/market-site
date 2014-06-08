@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div.container(ng-controller='StatsCtrl')
+    h1.lead Stats
+    hr
+    div.row
+      div.col-md-3
+        h3 Tracked users
+        p {{ stats.users }}
+      div.col-md-3
+        h3 Transactions recorded
+        p {{ stats.transactions }}
+      div.col-md-3
+        h3 Tracked items (unique)
+        p {{ stats.items }}

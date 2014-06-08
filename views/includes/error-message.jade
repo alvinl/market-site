@@ -1,0 +1,3 @@
+div(class='alert {{ alert.type }}', ng-show='alert.shown')
+  button.close(type='button', aria-hidden='true', ng-click='alert.shown=false;') &times;
+  | {{ alert.message }}

@@ -1,0 +1,20 @@
+table.table.table-hover.table-bordered.table-white.table-striped.table-white
+    thead
+      tr
+        th.col-md-3(ng-click='orderProp="-gameName"; reverse=!reverse') Game
+        th.col-md-4(ng-click='orderProp="-name"; reverse=!reverse') Item Name
+        th(ng-click='orderProp="-price"; reverse=!reverse') Sold for
+        th(ng-click='orderProp="-profit"; reverse=!reverse') User profit
+        th(ng-click='orderProp="-date"; reverse=!reverse') Date sold
+        th Seller
+    tbody
+      tr(ng-repeat='transaction in transactions | orderBy:orderProp:reverse')
+        td 
+          a(href='/app/{{ transaction.appID }}') {{ transaction.gameName }}
+        td
+          a(href='/item/{{ transaction.name | encodeURI }}') {{ transaction.name }}
+        td {{ transaction.price | currency }}
+        td {{ transaction.profit | currency }}
+        td {{ transaction.date | date:'short' }}
+        td 
+          a(href='/u/{{ transaction.user }}') {{ transaction.user }}

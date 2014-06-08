@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.container(ng-controller='TopAppsCtrl')
+    h1.lead Top apps
+    hr
+    table.table.table-white.table-striped.table-bordered
+      thead
+        th.col-sm-6(ng-click='orderProp="-gameName"; reverse=!reverse') Game
+        th(ng-click='orderProp="-profit"; reverse=!reverse') Accumulated Profit
+        th(ng-click='orderProp="sells"; reverse=!reverse') Total sold
+      tbody
+        tr(ng-repeat='app in apps | orderBy:orderProp:reverse')
+          td 
+            a(href='http://steamcommunity.com/market/search?q=appid:{{ app._id }}') {{ app.name }}
+          td {{ app.profit | currency }}
+          td {{ app.sold }}

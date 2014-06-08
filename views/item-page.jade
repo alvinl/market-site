@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  div.container(ng-controller='ItemCtrl')
+    h1
+      - var encodedItemName = encodeURIComponent(itemInfo._id)
+      a(href='https://steamcommunity.com/market/listings/#{itemInfo.app}/#{encodedItemName}') #{itemInfo._id} 
+        a.small(href='http://steamcommunity.com/market/search?q=appid:#{itemInfo.app}')= itemInfo.appName
+    hr
+    div.row
+      div.col-md-2
+        p.lead Total sold
+        p= itemInfo.sold
+      div.col-md-2
+        p.lead Total Profit
+        p(ng-init='profit=#{itemInfo.profit}', ng-cloak) {{ profit | currency }}
+      div.col-md-3
+        p.lead Total sold for
+        p(ng-init='total=#{itemInfo.total}', ng-cloak) {{ total | currency }}
+    br
+    include includes/transactions

@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  div.container(ng-controller='IndexCtrl')
+    h1.lead Recent transactions
+    include includes/error-message
+    hr
+    include includes/transactions

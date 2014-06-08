@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+/**
+ * Dependencies
+ */
+var app      = require('../app'),
+    mongoose = require('mongoose'),
+    config   = require('../config');
+
+/**
+ * Connect to MongoDB
+ */
+mongoose.connect(config.MONGO_URI);
+
+/**
+ * Initiate app
+ */
+var server = app.listen(config.PORT, function() {
+
+  console.log('Server listening on port ' + server.address().port);
+
+});
