@@ -32,7 +32,7 @@ MarketApp.controller('IndexCtrl', ['$scope', '$http', '$window',
       })
       .error(function (err) {
 
-        createAlert('alert-danger', 'There was an error loading recent transactions');
+        createAlert('alert-danger error-transactions', 'There was an error loading recent transactions');
       
       });
   
@@ -51,7 +51,10 @@ MarketApp.controller('UserCtrl', ['$scope', '$http', '$window',
 
         console.dir(response);
 
-        response.avatar = response.avatar.replace('.jpg', '_full.jpg');
+        response.avatar = response.avatar
+                          .replace('http://media.steampowered.com/steamcommunity/public/images/avatars/',
+                                    'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/')
+                          .replace('.jpg', '_full.jpg');
 
         $scope.userProfile = response;
       
