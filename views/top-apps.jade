@@ -14,6 +14,6 @@ block content
       tbody
         tr(ng-repeat='app in apps | orderBy:orderProp:reverse')
           td 
-            a(href='http://steamcommunity.com/market/search?q=appid:{{ app._id }}') {{ app.name }}
+            a(href='/app/{{ app._id }}') {{ app.name }}
           td {{ app.profit | currency }}
           td {{ app.sold }}
