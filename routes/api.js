@@ -17,7 +17,6 @@ router
   .get('/item/recent/:itemName', controller.itemRecent)
   .get('/app/recent/:appID', controller.appRecent)
   .get('/user/profile/:steamID', controller.profile)
-  .get('/users', controller.users)
   .get('/stats', controller.stats);
 
 module.exports = router;

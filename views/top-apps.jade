@@ -1,8 +1,10 @@
 extends layout
 
 block content
+  div.header-board
+    div.container
+      h1.board-title Most profited games
   div.container(ng-controller='TopAppsCtrl')
-    h1.lead Top apps
     hr
     table.table.table-white.table-striped.table-bordered
       thead

@@ -277,18 +277,3 @@ exports.profile = function (req, res, next) {
   });
 
 };
-
-/**
- * GET /api/users
- */
-exports.users = function (req, res, next) {
-
-  redis.zrevrange('market:stats:items:profit', 0, -1, function (err, allUsers) {
-  
-    if (err) return next(err);
-
-    return res.json({ users: allUsers }); 
-  
-  });
-
-};

@@ -1,8 +1,10 @@
 extends layout
 
 block content
+  div.header-board
+    div.container
+      h1.board-title Most profited items
   div.container(ng-controller='TopItemsCtrl')
-    h1.lead Top 50 items
     hr
     table.table.table-white.table-striped.table-bordered
       thead
