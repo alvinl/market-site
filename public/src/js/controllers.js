@@ -10,19 +10,50 @@ MarketApp.filter('encodeURI', function () {
 
 });
 
-MarketApp.controller('IndexCtrl', ['$scope', '$http', '$window',
+MarketApp.filter('toLocalString', function () {
 
-  function ($scope, $http, $window) {
+  return function (input) {
+  
+    return (input) ? input.toLocaleString() : input;
+  
+  };
 
-    $scope.alert = { shown: false };
+});
 
-    function createAlert (alertType, message) {
+MarketApp.controller('SearchCtrl', ['$scope', '$http',
+
+  function ($scope, $http) {
+
+    console.log('Loaded search ctrl');
     
-      $scope.alert.shown   = true;
-      $scope.alert.message = message;
-      $scope.alert.type    = alertType;
-    
-    }
+    $scope.search = function () {
+
+      if (!$scope.searchTerm)
+        return;
+
+      console.log('Searching for:', $scope.searchTerm);
+
+      $scope.searched = true;
+      
+      $http.get('/api/search/item/' + encodeURIComponent($scope.searchTerm))
+        .success(function (results) {
+          
+          $scope.searchResults = results;
+
+        })
+        .error(function (err) {
+          
+          console.error(err);
+
+        });
+
+    };
+
+  }]);
+
+MarketApp.controller('IndexCtrl', ['$scope', '$http',
+
+  function ($scope, $http) {
 
     $http.get('/api/recent')
       .success(function (response) {
@@ -30,9 +61,10 @@ MarketApp.controller('IndexCtrl', ['$scope', '$http', '$window',
         $scope.transactions = response;
       
       })
-      .error(function (err) {
+      .error(function () {
 
-        createAlert('alert-danger error-transactions', 'There was an error loading recent transactions');
+        $scope.showError = true;
+        $scope.errorMessage = 'Error loading recent transactions';
       
       });
   
@@ -159,9 +191,9 @@ MarketApp.controller('CurrencyCtrl', ['$scope', '$http', '$window',
 
   ]);
 
-MarketApp.controller('TopUsersCtrl', ['$scope', '$http', '$window',
+MarketApp.controller('TopUsersCtrl', ['$scope', '$http',
 
-  function ($scope, $http, $window) {
+  function ($scope, $http) {
 
     $http.get('/api/top/users')
       .success(function (response) {
@@ -169,12 +201,10 @@ MarketApp.controller('TopUsersCtrl', ['$scope', '$http', '$window',
         $scope.users = response;
       
       })
-      .error(function (err) {
+      .error(function () {
       
-        /**
-         * TODO
-         * - Handle error
-         */
+        $scope.showError = true;
+        $scope.errorMessage = 'Error loading most profited users';
       
       });
   
@@ -192,12 +222,10 @@ MarketApp.controller('TopCurrenciesCtrl', ['$scope', '$http', '$window',
         $scope.currencies = response;
       
       })
-      .error(function (err) {
+      .error(function () {
       
-        /**
-         * TODO
-         * - Handle error
-         */
+        $scope.showError = true;
+        $scope.errorMessage = 'Error loading most profited currencies';
       
       });
   
@@ -215,12 +243,10 @@ MarketApp.controller('TopAppsCtrl', ['$scope', '$http', '$window',
         $scope.apps = response;
       
       })
-      .error(function (err) {
+      .error(function () {
       
-        /**
-         * TODO
-         * - Handle error
-         */
+        $scope.showError = true;
+        $scope.errorMessage = 'Error loading most profited games';
       
       });
   
@@ -238,12 +264,10 @@ MarketApp.controller('TopItemsCtrl', ['$scope', '$http', '$window',
         $scope.items = response;
       
       })
-      .error(function (err) {
+      .error(function () {
       
-        /**
-         * TODO
-         * - Handle error
-         */
+        $scope.showError = true;
+        $scope.errorMessage = 'Error loading most profited items';
       
       });
   

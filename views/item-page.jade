@@ -3,6 +3,7 @@ extends layout
 block content
   div.header-board
     div.container
+      img.item-image(src='/api/hash/#{itemInfo.imgHash}')
       h1.board-title
         - var encodedItemName = encodeURIComponent(itemInfo._id)
         a.board-link(href='https://steamcommunity.com/market/listings/#{itemInfo.app}/#{encodedItemName}') #{itemInfo._id}

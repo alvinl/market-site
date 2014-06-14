@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  div(ng-controller='SearchCtrl')
+    div.header-board
+      div.container
+        h1.board-title Search items
+        form.col-sm-6.col-sm-offset-3
+          div.form-group
+            input.form-control.item-search-box(type='text', ng-change='search()', ng-model='searchTerm', autofocus)
+    div.container
+      hr
+      div.table-responsive
+        table.table.table-white.table-striped.table-bordered(ng-show='searched')
+          thead
+            th.col-sm-6(ng-click='orderProp="_id"; reverse=!reverse') Item Name
+            th(ng-click='orderProp="appName"; reverse=!reverse') Game
+            th(ng-click='orderProp="sold"; reverse=!reverse') Total sold
+            th(ng-click='orderProp="profit"; reverse=!reverse') Total profit
+          tbody
+            tr(ng-repeat='searchResult in searchResults | orderBy:orderProp:reverse')
+              td 
+                a(href='/item/{{ searchResult._id | encodeURI }}') {{ searchResult._id }}
+              td {{ searchResult.appName }}
+              td {{ searchResult.sold }}
+              td {{ searchResult.profit | currency }}

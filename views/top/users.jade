@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  div.header-board
+    div.container
+      h1.board-title Most profited users
+  div.container(ng-controller='TopUsersCtrl')
+    include ../includes/error-message
+    hr
+    div.table-responsive
+      table.table.table-white.table-striped.table-bordered
+        thead
+          th.col-md-3 User
+          th(ng-click='orderProp="-profit"; reverse=!reverse') Accumulated Profit
+          th Open Market Profile
+          th Steam Profile
+        tbody
+          tr(ng-repeat='user in users | orderBy:orderProp:reverse')
+            td {{ user._id }}
+            td {{ user.profit | currency }}
+            td
+              a(href='/u/{{ user._id }}') Open Market Profile
+            td
+              a(href='http://steamcommunity.com/profiles/{{ user._id }}') Steam Profile

@@ -1,4 +1,8 @@
 
+/**
+ * Dependencies
+ */
+
 var mongoose = require('mongoose'),
     Items    = mongoose.model('market_items');
 
@@ -9,6 +13,7 @@ exports.index = function (req, res, next) {
 
   var itemName = req.params.itemName;
 
+  // Fetch the items (:itemName) info
   Items.findById(itemName, function (err, itemInfo) {
   
     if (err) return next(err);

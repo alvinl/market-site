@@ -1,12 +1,13 @@
-extends layout
+extends ../layout
 
 block content
   div.header-board
     div.container
       h1.board-title Most profited currencies
   div.container(ng-controller='TopCurrenciesCtrl')
+    include ../includes/error-message
     hr
-    table.table.table-white.table-striped.table-bordered
+    table.table.table-white.table-striped.table-bordered(ng-show='currencies.length')
       thead
         th.col-sm-6(ng-click='orderProp="-name"; reverse=!reverse') Currency
         th Currency Code
@@ -17,4 +18,4 @@ block content
           td {{ currency.name }}
           td {{ currency._id }}
           td {{ currency.profit | currency }}
-          td {{ currency.sold }}
+          td {{ currency.sold | toLocalString }}

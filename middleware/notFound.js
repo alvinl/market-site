@@ -2,10 +2,8 @@
 /**
  * Catches all 404 requests
  */
+module.exports = function (req, res) {
 
-module.exports = function (req, res, next) {
-
-  res.status(404);
-  return res.end('Page not found');
+  return res.status(404).end('Page not found');
 
 };

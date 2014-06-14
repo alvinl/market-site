@@ -3,9 +3,13 @@
  * Dependencies
  */
 
-var controller = require('../controllers').api,
+var controller = require('../lib/ra')(__dirname + '/../controllers').api,
     express    = require('express'),
     router     = express.Router();
+
+/**
+ * Routes
+ */
 
 router
   .get('/transactions/:steamID', controller.transactions)
@@ -17,6 +21,12 @@ router
   .get('/item/recent/:itemName', controller.itemRecent)
   .get('/app/recent/:appID', controller.appRecent)
   .get('/user/profile/:steamID', controller.profile)
-  .get('/stats', controller.stats);
+  .get('/hash/:imgHash', controller.imgHash)
+  .get('/stats', controller.stats)
+  .get('/search/item/:itemName', controller.searchItem);
+
+/**
+ * Export `router`
+ */
 
 module.exports = router;

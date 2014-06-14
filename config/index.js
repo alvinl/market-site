@@ -1,5 +1,6 @@
 
 var packageInfo = require('../package'),
+    ra          = require('../lib/ra'),
     env         = process.env;
 
 module.exports = {
@@ -17,7 +18,7 @@ module.exports = {
   },
 
   // Initialize mongoose models
-  models: require('../models'),
+  models: ra(__dirname + '/../models'),
 
   bootstrap: require('./bootstrapper')
 

@@ -9,13 +9,19 @@ nav.navbar.navbar-default.navbar-flat-white(role='navigation')
       a.navbar-brand(href='/') Open Market
     div.collapse.navbar-collapse#main-nav
       ul.nav.navbar-nav.navbar-right
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown') Top 
+            b.caret
+          ul.dropdown-menu
+            li
+              a(href='/top/users') Users
+            li
+              a(href='/top/items') Items
+            li
+              a(href='/top/apps') Games
+            li
+              a(href='/top/currencies') Currencies
         li
-          a(href='/top/users') Top users
-        li
-          a(href='/top/apps') Top games
-        li
-          a(href='/top/items') Top items
-        li
-          a(href='/top/currencies') Top currencies
+          a(href='/search') Search
         li
           a(href='/stats') Stats

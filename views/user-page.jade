@@ -1,24 +1,25 @@
 extends layout
 
 block content
-  div.container(ng-controller='UserCtrl')
-    div.user-profile-container
-      img.img-circle.user-profile-image(ng-src='{{ userProfile.avatar }}')
-      div.user-profile-center-text
-        h2(ng-cloak) {{ userProfile.username }}
-        h3.user-profile-steam
-          a(href='https://steamcommunity.com/profiles/{{ steamID }}') Steam 
-          | - 
-          a(href='https://steamrep.com/search?q={{ steamID }}') SteamRep
-      div.row.user-profile-center-text.user-profile-stats
-        div.col-md-2.col-md-offset-3
-          p.user-profile-stats-stat(ng-cloak) {{ userProfile.profit | currency }}
-          h1.user-profile-stats-title Profit
-        div.col-md-2
-          p.user-profile-stats-stat(ng-cloak) {{ userProfile.total | currency }}
-          h1.user-profile-stats-title Total
-        div.col-md-2
-          p.user-profile-stats-stat(ng-cloak) {{ userProfile.sold }}
-          h1.user-profile-stats-title Items sold
-    hr
-    include includes/transactions
+  div(ng-controller='UserCtrl')
+    div.header-board
+      div.container
+        img.img-circle.user-profile-image(ng-src='{{ userProfile.avatar }}')
+        h1.board-title(ng-cloak) {{ userProfile.username }}
+        div.header-buttons
+          div.btn-toolbar
+            a.btn.btn-dark(href='https://steamcommunity.com/profiles/{{ steamID }}') Steam Profile
+            a.btn.btn-dark(href='https://steamrep.com/search?q={{ steamID }}') SteamRep Profile
+        hr
+        div.col-sm-2.col-sm-offset-3.item-stat-container
+          p.item-stat {{ userProfile.profit | currency }}
+          p.lead.item-stat-title Total Profit
+        div.col-sm-2.item-stat-container
+          p.item-stat(ng-cloak) {{userProfile.total | currency}}
+          p.lead.item-stat-title Total Sold
+        div.col-sm-2.item-stat-container
+          p.item-stat(ng-cloak) {{ userProfile.sold | toLocalString }}
+          p.lead.item-stat-title Total items sold
+    div.container
+      hr
+      include includes/transactions

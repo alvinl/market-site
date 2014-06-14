@@ -2,12 +2,16 @@
 /**
  * Dependencies
  */
+
 var cookieParser = require('cookie-parser'),
     bodyParser   = require('body-parser'),
     express      = require('express'),
     logger       = require('morgan'),
     path         = require('path');
 
+/**
+ * Configure app
+ */
 
 module.exports = function (app) {
 

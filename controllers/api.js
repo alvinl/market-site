@@ -1,22 +1,57 @@
 
-var request      = require('request'),
-    mongoose     = require('mongoose'),
-    Transactions = mongoose.model('market_transactions'),
-    Users        = mongoose.model('market_users'),
-    Items        = mongoose.model('market_items'),
-    Apps         = mongoose.model('market_apps'),
-    Currencies   = mongoose.model('market_currency'),
-    Utils        = require('../lib/utils'),
+/**
+ * Dependencies
+ */
+
+var mongoose     = require('mongoose'),
     config       = require('../config'),
-    redis        = require('redis').createClient(config.REDIS.port, config.REDIS.host);
+    Utils        = require('../lib/utils'),
+    request      = require('request').defaults({ json: true }),
+    redis        = require('redis').createClient(config.REDIS.port,
+                                                  config.REDIS.host);
 
 var API_ENDPOINT = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=%key&steamids='
                     .replace('%key', config.STEAM_KEY);
+/**
+ * Mongoose models
+ */
 
-redis.select(2);
+var Transactions = mongoose.model('market_transactions'),
+    Currencies   = mongoose.model('market_currency'),
+    Users        = mongoose.model('market_users'),
+    Items        = mongoose.model('market_items'),
+    Apps         = mongoose.model('market_apps');
+
+/**
+ * GET /api/hash/:imgHash
+ *
+ * Returns the url for a given image hash
+ */
+exports.imgHash = function (req, res, next) {
+  
+  // Search for the imgHash
+  redis.get('market:hashes:' + req.params.imgHash, function (err, hash) {
+    
+    if (err) return next(err);
+
+    // No hash found, return a 404
+    if (!hash)
+      return res.status(404).end();
+
+    // Hash was found, redirect to the image url
+    return res.redirect('https://steamcommunity-a.akamaihd.net/economy/image/' + hash + '/125fx125f');
+
+  });
+
+};
 
 /**
  * GET /api/stats
+ *
+ * Returns the following stats:
+ * - Tracked users
+ * - Tracked items
+ * - Tracked transactions
  */
 exports.stats = function (req, res, next) {
 
@@ -35,7 +70,9 @@ exports.stats = function (req, res, next) {
                           
         if (err) return next(err);
 
-        return res.json({ users: usersCount, items: itemsCount, transactions: transactionsCount[0].total });
+        return res.json({ users: usersCount,
+                          items: itemsCount, 
+                          transactions: transactionsCount[0].total });
       
       });
     
@@ -47,13 +84,16 @@ exports.stats = function (req, res, next) {
 
 /**
  * GET /api/transactions/:steamID
+ *
+ * Returns a users (:steamID) 20 most recent transactions
  */
 exports.transactions = function (req, res, next) {
 
   var steamID        = req.params.steamID,
       isValidSteamID = Utils.validateSteamID(steamID);
 
-  if (!isValidSteamID) return res.status(400).json({ error: Utils.msg.INVALID_STEAM_ID });
+  if (!isValidSteamID)
+    return res.status(400).json({ error: Utils.msg.INVALID_STEAM_ID });
 
   Transactions
     .find({ user: steamID }, { __v: 0 })
@@ -71,6 +111,8 @@ exports.transactions = function (req, res, next) {
 
 /**
  * GET /api/recent
+ *
+ * Returns the 50 most recent transactions
  */
 exports.recent = function (req, res, next) {
 
@@ -91,6 +133,8 @@ exports.recent = function (req, res, next) {
 
 /**
  * GET /api/item/recent/:itemName
+ *
+ * Returns an items (:itemName) 50 most recent transactions.
  */
 exports.itemRecent = function (req, res, next) {
 
@@ -112,6 +156,8 @@ exports.itemRecent = function (req, res, next) {
 
 /**
  * GET /api/app/recent/:appID
+ *
+ * Returns a games (:appID) 50 most recent transactions
  */
 exports.appRecent = function (req, res, next) {
 
@@ -133,6 +179,8 @@ exports.appRecent = function (req, res, next) {
 
 /**
  * GET /api/top/currencies
+ *
+ * Returns an array of the top currencies.
  */
 exports.topCurrencies = function (req, res, next) {
 
@@ -162,6 +210,8 @@ exports.topCurrencies = function (req, res, next) {
 
 /**
  * GET /api/top/users
+ *
+ * Returns an array of the most profited users.
  */
 exports.topUsers = function (req, res, next) {
 
@@ -181,6 +231,8 @@ exports.topUsers = function (req, res, next) {
 
 /**
  * GET /api/top/items
+ *
+ * Returns an array of the most profited items
  */
 exports.topItems = function (req, res, next) {
 
@@ -200,6 +252,8 @@ exports.topItems = function (req, res, next) {
 
 /**
  * GET /api/top/apps
+ *
+ * Returns an array of the most profited games
  */
 exports.topApps = function (req, res, next) {
 
@@ -219,37 +273,40 @@ exports.topApps = function (req, res, next) {
 
 /**
  * GET /api/user/profile/:steamID
+ *
+ * Returns a users Steam profile data.
  */
 exports.profile = function (req, res, next) {
 
-  var steamID = req.params.steamID,
-      timeNow = Date.now();
+  var timeNow        = Date.now(),
+      steamID        = req.params.steamID,
+      isValidSteamID = Utils.validateSteamID(steamID);
 
-  if (steamID.length !== 17) return res.json({ error: 'Invalid Steam ID' });
+  if (!isValidSteamID)
+    return res.status(400).json({ error: Utils.msg.INVALID_STEAM_ID });
 
   Users.findById(steamID, function (err, userProfile) {
   
     if (err) return next(err);
 
-    if (!userProfile) return res.status(404).end('User not found');
+    /**
+     * TODO
+     * - Create a proper 404 page for untracked users
+     */
+    if (!userProfile) 
+      return res.status(404).end('User not found');
 
-    if ((timeNow - userProfile.cache) < 43200000) return res.json(userProfile);
+    // Send back valid cached data
+    if ((timeNow - userProfile.cache) < 43200000) 
+      return res.json(userProfile);
 
-    request(API_ENDPOINT + steamID, function (err, resp, body) {
+    // Fetch new data from Steam
+    request(API_ENDPOINT + steamID, function (err, response) {
     
-      if (err || resp.statusCode !== 200) return next(err);
+      if (err || response.statusCode !== 200) 
+        return next(err);
 
-      var apiResponse;
-
-      try {
-
-        apiResponse = JSON.parse(body);
-
-      } catch (e) {
-
-        return next(e);
-
-      }
+      var apiResponse = response.body;
     
       var updatedProfile = {
 
@@ -259,11 +316,13 @@ exports.profile = function (req, res, next) {
 
       };
 
+      // Cache the data returned from Steam
       Users.update({ _id: steamID }, updatedProfile, function (err, profileUpdated) {
       
         if (err) return next(err);
 
-        if (!profileUpdated) return next(new Error('Error updating profile'));
+        if (!profileUpdated) 
+          return next(new Error('Error caching Steam profile data'));
 
         userProfile.username = updatedProfile.username;
         userProfile.avatar   = updatedProfile.avatar;
@@ -274,6 +333,50 @@ exports.profile = function (req, res, next) {
 
     });
   
+  });
+
+};
+
+/**
+ * GET /api/search/item/:itemName
+ *
+ * Returns search results for a item (:itemName)
+ */
+exports.searchItem = function (req, res, next) {
+
+  if (!req.params.hasOwnProperty('itemName'))
+    return res.json({ error: 'Invalid search term' });
+
+  // Check cache for query
+  redis.get('searchCache:' + encodeURIComponent(req.params.itemName), function (err, cachedResults) {
+    
+    if (err) return next(err);
+
+    // Send cached results
+    else if (cachedResults)
+      return res.json(JSON.parse(cachedResults));
+
+    // Get new results from MongoDB
+    Items    
+    .find({ $text: { $search: req.params.itemName } },
+          { score: { $meta: 'textScore' } })
+    .sort({ score: { $meta: 'textScore' } })
+    .limit(10)
+    .exec(function (err, searchResults) {
+    
+      if (err) return next(err);
+
+      // Cache results to redis for 30 minutes
+      redis.set('searchCache:' + encodeURIComponent(req.params.itemName), JSON.stringify(searchResults), 'EX', 1800, function (err) {
+        
+        if (err) return next(err);
+
+        return res.json(searchResults);
+
+      });
+
+    });
+
   });
 
 };

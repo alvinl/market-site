@@ -3,10 +3,11 @@
  * Dependencies
  */
 
-var middleware = require('./middleware'),
+var express    = require('express'),
+    ra         = require('./lib/ra'),
     config     = require('./config'),
-    routes     = require('./routes'),
-    express    = require('express'),
+    routes     = ra(__dirname + '/routes'),
+    middleware = ra(__dirname + '/middleware'),
     app        = express();
 
 /**
@@ -26,6 +27,7 @@ app.use('/top', routes.top);
 app.use('/app', routes.app);
 app.use('/item', routes.item);
 app.use('/stats', routes.stats);
+app.use('/search', routes.search);
 app.use('/currency', routes.currency);
 
 /**
@@ -36,7 +38,7 @@ app.use(middleware.notFound);
 app.use(middleware.errorHandler);
 
 /**
- * Expose app
+ * Export `app`
  */
 
 module.exports = app;

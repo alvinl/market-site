@@ -7,10 +7,10 @@ block content
     div.row
       div.col-md-2
         h3 Tracked users
-        p {{ stats.users }}
+        p(ng-cloak) {{ stats.users | toLocalString }}
       div.col-md-3
         h3 Transactions recorded
-        p {{ stats.transactions }}
+        p(ng-cloak) {{ stats.transactions | toLocalString }}
       div.col-md-3
         h3 Tracked items (unique)
-        p {{ stats.items }}
+        p(ng-cloak) {{ stats.items | toLocalString }}

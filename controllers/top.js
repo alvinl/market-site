@@ -2,39 +2,35 @@
 /**
  * GET /top/users
  */
+exports.users = function (req, res) {
 
-exports.users = function (req, res, next) {
-
-  return res.render('top-users', { title: 'Most profited users' }); 
+  return res.render('top/users', { title: 'Open Market | Most profited users' }); 
 
 };
 
 /**
  * GET /top/apps
  */
+exports.apps = function (req, res) {
 
-exports.apps = function (req, res, next) {
-
-  return res.render('top-apps', { title: 'Most profited apps' }); 
+  return res.render('top/apps', { title: 'Open Market | Most profited games' }); 
 
 };
 
 /**
  * GET /top/items
  */
+exports.items = function (req, res) {
 
-exports.items = function (req, res, next) {
-
-  return res.render('top-items', { title: 'Most profited items' }); 
+  return res.render('top/items', { title: 'Open Market | Most profited items' }); 
 
 };
 
 /**
  * GET /top/currencies
  */
+exports.currency = function (req, res) {
 
-exports.currency = function (req, res, next) {
-
-  return res.render('top-currencies', { title: 'Most profited currencies' });   
+  return res.render('top/currencies', { title: 'Open Market | Most profited currencies' });   
 
 };

@@ -1,13 +1,21 @@
 
-module.exports = {
+/**
+ * Dependencies
+ */
 
-  index:    require('./main'),
-  user:     require('./user'),
-  api:      require('./api'),
-  top:      require('./top'),
-  item:     require('./item'),
-  stats:    require('./stats'),
-  app:      require('./app'),
-  currency: require('./currency')
+var controller = require('../lib/ra')(__dirname + '/../controllers').index,
+    express    = require('express'),
+    router     = express.Router();
 
-};
+/**
+ * Routes
+ */
+
+router
+  .get('/', controller.index);
+
+/**
+ * Export `router`
+ */
+
+module.exports = router;

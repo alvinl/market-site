@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  div.header-board
+    div.container
+      h1.board-title Most profited games
+  div.container(ng-controller='TopAppsCtrl')
+    include ../includes/error-message
+    hr
+    div.table-responsive
+      table.table.table-white.table-striped.table-bordered(ng-show='apps.length')
+        thead
+          th.col-sm-6(ng-click='orderProp="-name"; reverse=!reverse') Game
+          th(ng-click='orderProp="-profit"; reverse=!reverse') Accumulated user profit
+          th(ng-click='orderProp="sold"; reverse=!reverse') Total items sold
+        tbody
+          tr(ng-repeat='app in apps | orderBy:orderProp:reverse')
+            td(ng-cloak)
+              a(href='/app/{{ app._id }}') {{ app.name }}
+            td(ng-cloak) {{ app.profit | currency }}
+            td(ng-cloak) {{ app.sold | toLocalString }}

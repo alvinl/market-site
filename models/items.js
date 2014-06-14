@@ -9,7 +9,8 @@ var itemsSchema = new Schema({
   appName: String,
   sold:    Number,
   profit:  Number,
-  total:   Number
+  total:   Number,
+  imgHash: String
 
 });
 

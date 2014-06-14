@@ -1,14 +1,13 @@
 
 /**
- * Logs error and displays an error page to 
- * the user.
+ * Logs error and displays an error page to the user.
  */
-
-module.exports = function (err, req, res, next) {
+module.exports = function (err, req, res) {
 
   console.error(err.stack || err);
 
   res.status(err.status || 500);
+  
   res.render('error', {
     message: err.message,
     error: {}

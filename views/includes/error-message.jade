@@ -1,3 +1,3 @@
-div(class='alert {{ alert.type }}', ng-show='alert.shown')
-  button.close(type='button', aria-hidden='true', ng-click='alert.shown=false;') &times;
-  | {{ alert.message }}
+div(class='alert alert-danger error-transactions', ng-show='showError')
+  button.close(type='button', aria-hidden='true', ng-click='showError=false;') &times;
+  | {{ errorMessage }}
