@@ -13,9 +13,11 @@
     "jade": "~1.3.0",
     "mongoose": "^3.8.8",
     "redis": "^0.10.1",
-    "hiredis": "^0.1.16",
     "request": "^2.34.0",
     "sse-streamer": "git://github.com/Alvinlz/sse-streamer.git"
+  },
+  "optionalDependancies": {
+    "hiredis": "^0.1.16"
   },
   "devDependencies": {
     "gulp": "^3.6.2",
