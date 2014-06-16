@@ -13,10 +13,12 @@ block content
       div.table-responsive
         table.table.table-white.table-striped.table-bordered(ng-show='searched')
           thead
-            th.col-sm-6(ng-click='orderProp="_id"; reverse=!reverse') Item Name
+            th.col-sm-5(ng-click='orderProp="_id"; reverse=!reverse') Item Name
             th(ng-click='orderProp="appName"; reverse=!reverse') Game
             th(ng-click='orderProp="sold"; reverse=!reverse') Total sold
             th(ng-click='orderProp="profit"; reverse=!reverse') Total profit
+            th Avg price
+            th Avg profit
           tbody
             tr(ng-repeat='searchResult in searchResults | orderBy:orderProp:reverse')
               td 
@@ -24,3 +26,5 @@ block content
               td {{ searchResult.appName }}
               td {{ searchResult.sold }}
               td {{ searchResult.profit | currency }}
+              td {{ searchResult.total / searchResult.sold | currency }}
+              td {{ searchResult.profit / searchResult.sold | currency }}

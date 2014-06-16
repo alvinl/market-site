@@ -19,6 +19,12 @@ block content
       div.col-sm-2.item-stat-container
         p.item-stat(ng-init='total=#{itemInfo.total}', ng-cloak) {{ total | currency }}
         p.lead.item-stat-title Total sold for
+      div.col-sm-2.col-sm-offset-4.item-stat-container
+        p.item-stat(ng-init='sold=#{itemInfo.sold}', ng-cloak) {{ total / sold | currency }}
+        p.lead.item-stat-title Avg. price
+      div.col-sm-2.item-stat-container
+        p.item-stat(ng-init='profit=#{itemInfo.profit}', ng-cloak) {{ profit / sold | currency }}
+        p.lead.item-stat-title Avg. profit
   div.container(ng-controller='ItemCtrl')
     hr
     include includes/transactions
