@@ -57,7 +57,7 @@ MarketApp.controller('SearchCtrl', ['$scope', '$http',
 
       $scope.searched = true;
       
-      $http.get('/api/search/item/' + encodeURIComponent($scope.searchTerm))
+      $http.get('/api/search/item/' + encodeURIComponent($scope.searchTerm), {cache: true})
         .success(function (results) {
           
           $scope.searchResults = results;
