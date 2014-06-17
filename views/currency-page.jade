@@ -1,23 +1,20 @@
 extends layout
 
 block content
+  div.header-board
+    div.container
+      h1.board-title
+        a.board-link(href='http://steamcommunity.com/market/search?q=appid:#{currencyInfo._id}', ng-init='currencyID=#{currencyInfo._id}') {{ currencyID | currencyName }}
+      hr
+      div.col-sm-2.col-sm-offset-3.item-stat-container
+        p.item-stat(ng-init='sold=#{currencyInfo.sold}', ng-cloak) {{ sold | toLocalString }}
+        p.lead.item-stat-title Total sold
+      div.col-sm-2.item-stat-container
+        p.item-stat(ng-init='profit=#{currencyInfo.profit}', ng-cloak) {{ profit | currency }}
+        p.lead.item-stat-title Total profit
+      div.col-sm-2.item-stat-container
+        p.item-stat(ng-init='total=#{currencyInfo.total}', ng-cloak) {{ total | currency }}
+        p.lead.item-stat-title Total sold
   div.container(ng-controller='CurrencyCtrl')
-    pre= currencyInfo
-    h1.lead= currencyInfo.symbol
-    //- h1
-    //   - var encodedItemName = encodeURIComponent(itemInfo._id)
-    //   a(href='https://steamcommunity.com/market/listings/#{itemInfo.app}/#{encodedItemName}') #{itemInfo._id} 
-    //     a.small(href='http://steamcommunity.com/market/search?q=appid:#{itemInfo.app}')= itemInfo.appName
-    // hr
-    // div.row
-    //   div.col-md-2
-    //     p.lead Total sold
-    //     p= itemInfo.sold
-    //   div.col-md-2
-    //     p.lead Total Profit
-    //     p(ng-init='profit=#{itemInfo.profit}', ng-cloak) {{ profit | currency }}
-    //   div.col-md-3
-    //     p.lead Total sold for
-    //     p(ng-init='total=#{itemInfo.total}', ng-cloak) {{ total | currency }}
-    // br
-    // include includes/transactions
+    hr
+    include includes/transactions

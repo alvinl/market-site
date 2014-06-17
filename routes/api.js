@@ -23,7 +23,8 @@ router
   .get('/user/profile/:steamID', controller.profile)
   .get('/hash/:imgHash', controller.imgHash)
   .get('/stats', controller.stats)
-  .get('/search/item/:itemName', controller.searchItem);
+  .get('/search/item/:itemName', controller.searchItem)
+  .get('/currency/recent/:currencyID', controller.currencyRecent);
 
 /**
  * Export `router`

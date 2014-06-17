@@ -15,7 +15,8 @@ block content
         th(ng-click='orderProp="sold"; reverse=!reverse') Total sold
       tbody
         tr(ng-repeat='currency in currencies | orderBy:orderProp:reverse')
-          td {{ currency.name }}
+          td 
+            a(href='/currency/{{ currency._id }}') {{ currency.name }}
           td {{ currency._id }}
           td {{ currency.profit | currency }}
           td {{ currency.sold | toLocalString }}

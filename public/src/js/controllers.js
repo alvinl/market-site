@@ -10,6 +10,28 @@ MarketApp.filter('encodeURI', function () {
 
 });
 
+MarketApp.filter('currencyName', function () {
+
+  var currencyNames = {
+
+    2001: 'USD',
+    2003: 'EUR',
+    2005: 'RUB',
+    2002: 'GBP',
+    2007: 'BRL'
+
+  };
+  
+  return function (input) {
+    
+    return (currencyNames.hasOwnProperty(input)) ? 
+            currencyNames[input] : 
+            'Unkown Currency';
+
+  };
+
+});
+
 MarketApp.filter('toLocalString', function () {
 
   return function (input) {
@@ -167,25 +189,21 @@ MarketApp.controller('AppCtrl', ['$scope', '$http', '$window',
 
   ]);
 
-MarketApp.controller('CurrencyCtrl', ['$scope', '$http', '$window',
+MarketApp.controller('CurrencyCtrl', ['$scope', '$http',
 
-  function ($scope, $http, $window) {
+  function ($scope, $http) {
 
-    // var itemName = $window.location.pathname.replace('/app/', '');
+    $http.get('/api/currency/recent/' + $scope.currencyID)
+      .success(function (response) {
 
-    // $http.get('/api/app/recent/' + itemName)
-    //   .success(function (response) {
+         $scope.transactions = response;
       
-    //      console.dir(response);
-
-    //      $scope.transactions = response;
+      })
+      .error(function (err) {
       
-    //   })
-    //   .error(function (err) {
+         console.error(err);
       
-         
-      
-    //   });
+      });
   
   }
 

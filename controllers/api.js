@@ -380,3 +380,26 @@ exports.searchItem = function (req, res, next) {
   });
 
 };
+
+/**
+ * GET /api/currency/recent/:currencyID
+ *
+ * Returns a currencies (:currencyID) 50 most recent transactions
+ */
+exports.currencyRecent = function (req, res, next) {
+  
+   var currencyID = req.params.currencyID;
+
+    Transactions
+      .find({ currencyID: currencyID }, { _id: 0, gameName: 1, name: 1, price: 1, profit: 1, date: 1, user: 1, appID: 1 })
+      .sort('-date')
+      .limit(50)
+      .exec(function (err, recentTransactions) {
+      
+        if (err) return next(err);
+
+        return res.json(recentTransactions);
+      
+      });
+
+};

@@ -14,7 +14,7 @@ block content
         p.lead.item-stat-title Total profit
       div.col-sm-2.item-stat-container
         p.item-stat(ng-init='total=#{appInfo.total}', ng-cloak) {{ total | currency }}
-        p.lead.item-stat-title Total sold for
+        p.lead.item-stat-title Total sold
   div.container(ng-controller='AppCtrl')
-    br
+    hr
     include includes/transactions
