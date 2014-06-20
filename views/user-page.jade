@@ -12,11 +12,11 @@ block content
             a.btn.btn-dark(href='https://steamrep.com/search?q={{ steamID }}') SteamRep Profile
         hr
         div.col-sm-2.col-sm-offset-3.item-stat-container
-          p.item-stat {{ userProfile.profit | currency }}
-          p.lead.item-stat-title Total Profit
+          p.item-stat(ng-cloak) {{ userProfile.profit | currency }}
+          p.lead.item-stat-title Total profit
         div.col-sm-2.item-stat-container
           p.item-stat(ng-cloak) {{userProfile.total | currency}}
-          p.lead.item-stat-title Total Sold
+          p.lead.item-stat-title Total sold
         div.col-sm-2.item-stat-container
           p.item-stat(ng-cloak) {{ userProfile.sold | toLocalString }}
           p.lead.item-stat-title Total items sold
