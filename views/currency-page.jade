@@ -7,7 +7,7 @@ block content
         a.board-link(href='http://steamcommunity.com/market/search?q=appid:#{currencyInfo._id}', ng-init='currencyID=#{currencyInfo._id}') {{ currencyID | currencyName }}
       hr
       div.col-sm-2.col-sm-offset-3.item-stat-container
-        p.item-stat(ng-init='sold=#{currencyInfo.sold}', ng-cloak) {{ sold | toLocalString }}
+        p.item-stat(ng-init='sold=#{currencyInfo.sold}', ng-cloak) {{ sold | commaSeperate }}
         p.lead.item-stat-title Total items sold
       div.col-sm-2.item-stat-container
         p.item-stat(ng-init='profit=#{currencyInfo.profit}', ng-cloak) {{ profit | currency }}

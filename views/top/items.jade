@@ -21,4 +21,4 @@ block content
             td
               a(href='/item/{{ item._id | encodeURI }}') {{ item._id }}
             td {{ item.profit | currency }}
-            td {{ item.sold | toLocalString }}
+            td {{ item.sold | commaSeperate }}

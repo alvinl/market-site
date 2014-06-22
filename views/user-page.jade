@@ -18,7 +18,7 @@ block content
           p.item-stat(ng-cloak) {{userProfile.total | currency}}
           p.lead.item-stat-title Total sold
         div.col-sm-2.item-stat-container
-          p.item-stat(ng-cloak) {{ userProfile.sold | toLocalString }}
+          p.item-stat(ng-cloak) {{ userProfile.sold | commaSeperate }}
           p.lead.item-stat-title Total items sold
     div.container
       hr

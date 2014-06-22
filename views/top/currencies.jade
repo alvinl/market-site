@@ -19,4 +19,4 @@ block content
             a(href='/currency/{{ currency._id }}') {{ currency.name }}
           td {{ currency._id }}
           td {{ currency.profit | currency }}
-          td {{ currency.sold | toLocalString }}
+          td {{ currency.sold | commaSeperate }}

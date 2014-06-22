@@ -18,4 +18,4 @@ block content
             td(ng-cloak)
               a(href='/app/{{ app._id }}') {{ app.name }}
             td(ng-cloak) {{ app.profit | currency }}
-            td(ng-cloak) {{ app.sold | toLocalString }}
+            td(ng-cloak) {{ app.sold | commaSeperate }}
