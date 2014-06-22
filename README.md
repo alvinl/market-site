@@ -22,7 +22,7 @@ Default config variables can be found in `config/index.js` and can be overriden 
 2. `npm install`
 3. `STEAM_KEY='steam api key' npm start`
 
-## Devloping
+## Developing
 1. Install the app (see above)
 2. Run `npm run watch` to have the js and css compiled automatically as you develop
 3. Run `npm run build` before pushing out changes
