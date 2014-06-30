@@ -4,6 +4,13 @@ body {
 
 }
 
+.notfound-container {
+
+  text-align: center;
+  margin-top: 15%;
+
+}
+
 .header-board {
 
   background-color: rgb(42,46,52);
