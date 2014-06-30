@@ -24,7 +24,7 @@ block content
               td 
                 a(href='/item/{{ searchResult._id | encodeURI }}') {{ searchResult._id }}
               td {{ searchResult.appName }}
-              td {{ searchResult.sold }}
+              td {{ searchResult.sold | commaSeperate }}
               td {{ searchResult.profit | currency }}
               td {{ searchResult.total / searchResult.sold | currency }}
               td {{ searchResult.profit / searchResult.sold | currency }}

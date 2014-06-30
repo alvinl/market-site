@@ -3,8 +3,7 @@ extends layout
 block content
   div.header-board
     div.container
-      h1.board-title
-        a.board-link(href='http://steamcommunity.com/market/search?q=appid:#{currencyInfo._id}', ng-init='currencyID=#{currencyInfo._id}') {{ currencyID | currencyName }}
+      h1.board-title(ng-init='currencyID=#{currencyInfo._id}') {{ currencyID | currencyName }}
       hr
       div.col-sm-2.col-sm-offset-3.item-stat-container
         p.item-stat(ng-init='sold=#{currencyInfo.sold}', ng-cloak) {{ sold | commaSeperate }}

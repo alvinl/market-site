@@ -192,16 +192,6 @@ exports.topCurrencies = function (req, res, next) {
     
       if (err) return next(err);
 
-      topCurrencies = topCurrencies.map(function (currency) {
-
-        return { _id:    currency._id, 
-                 sold:   currency.sold,
-                 profit: currency.profit,
-                 total:  currency.total,
-                 name:   Utils.getCurrencySymbol(currency._id) };
-      
-      });
-
       return res.json(topCurrencies);
     
     });
