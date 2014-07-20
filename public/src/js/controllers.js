@@ -47,15 +47,11 @@ MarketApp.filter('commaSeperate', function () {
 MarketApp.controller('SearchCtrl', ['$scope', '$http',
 
   function ($scope, $http) {
-
-    console.log('Loaded search ctrl');
     
     $scope.search = function () {
 
       if (!$scope.searchTerm)
         return;
-
-      console.log('Searching for:', $scope.searchTerm);
 
       $scope.searched = true;
       
@@ -155,8 +151,6 @@ MarketApp.controller('ItemCtrl', ['$scope', '$http', '$window',
 
     $http.get('/api/item/recent/' + itemName)
       .success(function (response) {
-      
-         console.dir(response);
 
          $scope.transactions = response;
       
@@ -179,8 +173,6 @@ MarketApp.controller('AppCtrl', ['$scope', '$http', '$window',
 
     $http.get('/api/app/recent/' + itemName)
       .success(function (response) {
-      
-         console.dir(response);
 
          $scope.transactions = response;
       
@@ -305,8 +297,6 @@ MarketApp.controller('StatsCtrl', ['$scope', '$http', '$window',
 
     $http.get('/api/stats')
       .success(function (response) {
-
-        console.dir(response);
 
         $scope.stats = response;
       
