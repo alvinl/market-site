@@ -6,7 +6,10 @@ block content
       img.item-image(src='/api/hash/#{itemInfo.imgHash}')
       h1.board-title
         - var encodedItemName = encodeURIComponent(itemInfo._id)
-        a.board-link(href='https://steamcommunity.com/market/listings/#{itemInfo.app}/#{encodedItemName}') #{itemInfo._id}
+        if (itemInfo.app === 753)
+          a.board-link(href='https://steamcommunity.com/market/search?q=#{encodedItemName}') #{itemInfo._id}
+        else
+          a.board-link(href='https://steamcommunity.com/market/listings/#{itemInfo.app}/#{encodedItemName}') #{itemInfo._id}
       p.board-subtitle
         a.board-link(href='http://steamcommunity.com/market/search?q=appid:#{itemInfo.app}')= itemInfo.appName
       hr
