@@ -7,14 +7,14 @@ block content
   div.container(ng-controller='TopCurrenciesCtrl')
     include ../includes/error-message
     hr
-    table.table.table-white.table-striped.table-bordered(ng-show='currencies.length')
+    table.table.table-white.table-striped.table-bordered
       thead
         th.col-sm-6(ng-click='orderProp="-name"; reverse=!reverse') Currency
         th Currency Code
         th(ng-click='orderProp="-profit"; reverse=!reverse') Accumulated Profit
         th(ng-click='orderProp="sold"; reverse=!reverse') Total sold
       tbody
-        tr(ng-repeat='currency in currencies | orderBy:orderProp:reverse')
+        tr(ng-repeat='currency in currencies | orderBy:orderProp:reverse', ng-cloak)
           td 
             a(href='/currency/{{ currency._id }}') {{ currency._id | currencyName }}
           td {{ currency._id }}

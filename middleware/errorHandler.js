@@ -2,7 +2,7 @@
 /**
  * Logs error and displays an error page to the user.
  */
-module.exports = function (err, req, res) {
+module.exports = function (err, req, res, next) {
 
   console.error(err.stack || err);
 

@@ -23,6 +23,50 @@ var Transactions = mongoose.model('market_transactions'),
     Apps         = mongoose.model('market_apps');
 
 /**
+ * GET /api/iteminfo/:itemName
+ *
+ * Returns a items info
+ */
+exports.itemInfo = function (req, res, next) {
+  
+  if (!req.params.hasOwnProperty('itemName'))
+    return res.json({ error: 'Invalid search term' });
+
+  // Check cache for query
+  redis.get('infoCache:' + encodeURIComponent(req.params.itemName), function (err, cachedResults) {
+    
+    if (err) return next(err);
+
+    // Send cached results
+    else if (cachedResults)
+      return res.json(JSON.parse(cachedResults));
+
+    // Get new results from MongoDB
+    Items    
+      .find({ $text: { $search: req.params.itemName } },
+            { score: { $meta: 'textScore' } })
+      .sort({ score: { $meta: 'textScore' } })
+      .limit(1)
+      .exec(function (err, searchResults) {
+    
+        if (err) return next(err);
+
+        // Cache results to redis for 30 minutes
+        redis.set('infoCache:' + encodeURIComponent(req.params.itemName), JSON.stringify(searchResults), 'EX', 1800, function (err) {
+          
+          if (err) return next(err);
+
+          return res.json(searchResults);
+
+      });
+
+    });
+
+  });
+
+};
+
+/**
  * GET /api/hash/:imgHash
  *
  * Returns the url for a given image hash

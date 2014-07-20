@@ -24,7 +24,8 @@ router
   .get('/hash/:imgHash', controller.imgHash)
   .get('/stats', controller.stats)
   .get('/search/item/:itemName', controller.searchItem)
-  .get('/currency/recent/:currencyID', controller.currencyRecent);
+  .get('/currency/recent/:currencyID', controller.currencyRecent)
+  .get('/iteminfo/:itemName', controller.itemInfo);
 
 /**
  * Export `router`

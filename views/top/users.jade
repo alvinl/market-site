@@ -15,7 +15,7 @@ block content
           th Open Market Profile
           th Steam Profile
         tbody
-          tr(ng-repeat='user in users | orderBy:orderProp:reverse')
+          tr(ng-repeat='user in users | orderBy:orderProp:reverse', ng-cloak)
             td {{ user._id }}
             td {{ user.profit | currency }}
             td

@@ -9,8 +9,8 @@ div.table-responsive
           th(ng-click='orderProp="-date"; reverse=!reverse') Date sold
           th Seller
       tbody
-        tr(ng-repeat='transaction in transactions | orderBy:orderProp:reverse')
-          td 
+        tr(ng-repeat='transaction in transactions | orderBy:orderProp:reverse', ng-cloak)
+          td
             a(href='/app/{{ transaction.appID }}') {{ transaction.gameName }}
           td
             a(href='/item/{{ transaction.name | encodeURI }}') {{ transaction.name }}

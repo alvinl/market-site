@@ -8,14 +8,14 @@ block content
     include ../includes/error-message
     hr
     div.table-responsive
-      table.table.table-white.table-striped.table-bordered(ng-show='items.length')
+      table.table.table-white.table-striped.table-bordered
         thead
           th.col-sm-3(ng-click='orderProp="-game"; reverse=!reverse') Game
           th.col-sm-5(ng-click='orderProp="-name"; reverse=!reverse') Item name
           th(ng-click='orderProp="-profit"; reverse=!reverse') Accumulated Profit
           th(ng-click='orderProp="sold"; reverse=!reverse') Total sold
         tbody
-          tr(ng-repeat='item in items | orderBy:orderProp:reverse')
+          tr(ng-repeat='item in items | orderBy:orderProp:reverse', ng-cloak)
             td 
               a(href='http://steamcommunity.com/market/search?q=appid:{{ item.app }}') {{ item.appName }}
             td
