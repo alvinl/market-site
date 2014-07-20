@@ -102,10 +102,14 @@ MarketApp.controller('UserCtrl', ['$scope', '$http', '$window',
 
     var steamID = $scope.steamID = $window.location.pathname.replace('/u/', '');
 
+    $scope.userProfile = {
+
+      avatar: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg'
+
+    };
+
     $http.get('/api/user/profile/' + steamID)
       .success(function (response) {
-
-        console.dir(response);
 
         response.avatar = response.avatar
                           .replace('http://media.steampowered.com/steamcommunity/public/images/avatars/',
