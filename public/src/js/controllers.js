@@ -3,9 +3,9 @@ var MarketApp = angular.module('MarketApp', []);
 MarketApp.filter('encodeURI', function () {
 
   return function (input) {
-  
-    return encodeURIComponent(input); 
-  
+
+    return encodeURIComponent(input);
+
   };
 
 });
@@ -18,14 +18,15 @@ MarketApp.filter('currencyName', function () {
     2003: 'EUR',
     2005: 'RUB',
     2002: 'GBP',
-    2007: 'BRL'
+    2007: 'BRL',
+    2008: 'JPY'
 
   };
-  
+
   return function (input) {
-    
-    return (currencyNames.hasOwnProperty(input)) ? 
-            currencyNames[input] : 
+
+    return (currencyNames.hasOwnProperty(input)) ?
+            currencyNames[input] :
             'Unkown Currency';
 
   };
@@ -35,11 +36,11 @@ MarketApp.filter('currencyName', function () {
 MarketApp.filter('commaSeperate', function () {
 
   return function (input) {
-  
-    // Source: 
+
+    // Source:
     // https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
     return (input) ? input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : input;
-  
+
   };
 
 });
@@ -47,22 +48,22 @@ MarketApp.filter('commaSeperate', function () {
 MarketApp.controller('SearchCtrl', ['$scope', '$http',
 
   function ($scope, $http) {
-    
+
     $scope.search = function () {
 
       if (!$scope.searchTerm)
         return;
 
       $scope.searched = true;
-      
+
       $http.get('/api/search/item/' + encodeURIComponent($scope.searchTerm), {cache: true})
         .success(function (results) {
-          
+
           $scope.searchResults = results;
 
         })
         .error(function (err) {
-          
+
           console.error(err);
 
         });
@@ -79,15 +80,15 @@ MarketApp.controller('IndexCtrl', ['$scope', '$http',
       .success(function (response) {
 
         $scope.transactions = response;
-      
+
       })
       .error(function () {
 
         $scope.showError = true;
         $scope.errorMessage = 'Error loading recent transactions';
-      
+
       });
-  
+
   }
 
   ]);
@@ -113,32 +114,32 @@ MarketApp.controller('UserCtrl', ['$scope', '$http', '$window',
                           .replace('.jpg', '_full.jpg');
 
         $scope.userProfile = response;
-      
+
       })
       .error(function (err) {
-      
+
         /**
          * TODO
          * - Handle error
          */
-      
+
       });
 
     $http.get('/api/transactions/' + steamID)
       .success(function (response) {
 
         $scope.transactions = response;
-      
+
       })
       .error(function (err) {
-      
+
         /**
          * TODO
          * - Handle error
          */
-      
+
       });
-  
+
   }
 
   ]);
@@ -153,14 +154,14 @@ MarketApp.controller('ItemCtrl', ['$scope', '$http', '$window',
       .success(function (response) {
 
          $scope.transactions = response;
-      
+
       })
       .error(function (err) {
-      
-         
-      
+
+
+
       });
-  
+
   }
 
   ]);
@@ -175,14 +176,14 @@ MarketApp.controller('AppCtrl', ['$scope', '$http', '$window',
       .success(function (response) {
 
          $scope.transactions = response;
-      
+
       })
       .error(function (err) {
-      
-         
-      
+
+
+
       });
-  
+
   }
 
   ]);
@@ -195,14 +196,14 @@ MarketApp.controller('CurrencyCtrl', ['$scope', '$http',
       .success(function (response) {
 
          $scope.transactions = response;
-      
+
       })
       .error(function (err) {
-      
+
          console.error(err);
-      
+
       });
-  
+
   }
 
   ]);
@@ -215,15 +216,15 @@ MarketApp.controller('TopUsersCtrl', ['$scope', '$http',
       .success(function (response) {
 
         $scope.users = response;
-      
+
       })
       .error(function () {
-      
+
         $scope.showError = true;
         $scope.errorMessage = 'Error loading most profited users';
-      
+
       });
-  
+
   }
 
   ]);
@@ -236,15 +237,15 @@ MarketApp.controller('TopCurrenciesCtrl', ['$scope', '$http', '$window',
       .success(function (response) {
 
         $scope.currencies = response;
-      
+
       })
       .error(function () {
-      
+
         $scope.showError = true;
         $scope.errorMessage = 'Error loading most profited currencies';
-      
+
       });
-  
+
   }
 
   ]);
@@ -257,15 +258,15 @@ MarketApp.controller('TopAppsCtrl', ['$scope', '$http', '$window',
       .success(function (response) {
 
         $scope.apps = response;
-      
+
       })
       .error(function () {
-      
+
         $scope.showError = true;
         $scope.errorMessage = 'Error loading most profited games';
-      
+
       });
-  
+
   }
 
   ]);
@@ -278,15 +279,15 @@ MarketApp.controller('TopItemsCtrl', ['$scope', '$http', '$window',
       .success(function (response) {
 
         $scope.items = response;
-      
+
       })
       .error(function () {
-      
+
         $scope.showError = true;
         $scope.errorMessage = 'Error loading most profited items';
-      
+
       });
-  
+
   }
 
   ]);
@@ -299,17 +300,17 @@ MarketApp.controller('StatsCtrl', ['$scope', '$http', '$window',
       .success(function (response) {
 
         $scope.stats = response;
-      
+
       })
       .error(function (err) {
-      
+
         /**
          * TODO
          * - Handle error
          */
-      
+
       });
-  
+
   }
 
   ]);
