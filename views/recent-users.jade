@@ -9,11 +9,11 @@ block content
     hr
     table.table.table-white.table-striped.table-bordered
       thead
-        th.col-sm-3(ng-click='orderProp="-name"; reverse=!reverse') SteamID
-        th.col-sm-4 First seen
-        th(ng-click='orderProp="-profit"; reverse=!reverse') Items sold
-        th(ng-click='orderProp="sold"; reverse=!reverse') Total profit
-        th(ng-click='orderProp="sold"; reverse=!reverse') Total sold
+        th.col-sm-3 SteamID
+        th.col-sm-4(ng-click='orderProp="-firstSeen"; reverse=!reverse') First seen
+        th(ng-click='orderProp="sold"; reverse=!reverse') Items sold
+        th(ng-click='orderProp="profit"; reverse=!reverse') Total profit
+        th(ng-click='orderProp="total"; reverse=!reverse') Total sold
       tbody
         tr(ng-repeat='user in users | orderBy:orderProp:reverse', ng-cloak)
           td
