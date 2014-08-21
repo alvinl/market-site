@@ -12,7 +12,8 @@ var controller = require('../controllers/recent'),
  */
 
 router
-  .get('/users', controller.users);
+  .get('/users', controller.users)
+  .get('/items', controller.items);
 
 /**
  * Export `router`

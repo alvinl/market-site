@@ -27,6 +27,7 @@ var Transactions = mongoose.model('market_transactions'),
  *
  * Returns recently seen users
  */
+
 exports.recentUsers = function (req, res, next) {
 
   Users
@@ -39,6 +40,29 @@ exports.recentUsers = function (req, res, next) {
         return next(err);
 
       return res.json(recentlySeenUsers);
+
+    });
+
+};
+
+/**
+ * GET /api/recent/items
+ *
+ * Returns recently seen items
+ */
+
+exports.recentItems = function (req, res, next) {
+
+  Items
+    .find()
+    .sort({ firstSeen: -1 })
+    .limit(50)
+    .exec(function (err, recentlySeenItems) {
+
+      if (err)
+        return next(err);
+
+      return res.json(recentlySeenItems);
 
     });
 

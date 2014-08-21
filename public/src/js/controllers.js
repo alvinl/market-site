@@ -114,6 +114,27 @@ MarketApp.controller('RecentUsersCtrl', ['$scope', '$http',
 
   ]);
 
+MarketApp.controller('RecentItemsCtrl', ['$scope', '$http',
+
+  function ($scope, $http) {
+
+    $http.get('/api/recent/items')
+      .success(function (response) {
+
+        $scope.items = response;
+
+      })
+      .error(function () {
+
+        $scope.showError = true;
+        $scope.errorMessage = 'Error loading recently tracked items';
+
+      });
+
+  }
+
+  ]);
+
 MarketApp.controller('UserCtrl', ['$scope', '$http', '$window',
 
   function ($scope, $http, $window) {
