@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  div.header-board
+    div.container
+      h1.board-title Recently tracked users
+  div.container(ng-controller='RecentUsersCtrl')
+    include includes/error-message
+    hr
+    table.table.table-white.table-striped.table-bordered
+      thead
+        th.col-sm-3(ng-click='orderProp="-name"; reverse=!reverse') SteamID
+        th.col-sm-4 First seen
+        th(ng-click='orderProp="-profit"; reverse=!reverse') Items sold
+        th(ng-click='orderProp="sold"; reverse=!reverse') Total profit
+        th(ng-click='orderProp="sold"; reverse=!reverse') Total sold
+      tbody
+        tr(ng-repeat='user in users | orderBy:orderProp:reverse', ng-cloak)
+          td
+            a(href='/u/{{ user._id }}') {{ user._id }}
+          td {{ user.firstSeen | date:'medium' }}
+          td {{ user.sold }}
+          td {{ user.profit | currency }}
+          td {{ user.total | currency }}

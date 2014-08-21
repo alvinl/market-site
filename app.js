@@ -28,6 +28,7 @@ app.use('/app', routes.app);
 app.use('/item', routes.item);
 app.use('/stats', routes.stats);
 app.use('/search', routes.search);
+app.use('/recent', routes.recent);
 app.use('/currency', routes.currency);
 
 /**

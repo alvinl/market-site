@@ -23,18 +23,40 @@ var Transactions = mongoose.model('market_transactions'),
     Apps         = mongoose.model('market_apps');
 
 /**
+ * GET /api/recent/users
+ *
+ * Returns recently seen users
+ */
+exports.recentUsers = function (req, res, next) {
+
+  Users
+    .find()
+    .sort({ firstSeen: -1 })
+    .limit(50)
+    .exec(function (err, recentlySeenUsers) {
+
+      if (err)
+        return next(err);
+
+      return res.json(recentlySeenUsers);
+
+    });
+
+};
+
+/**
  * GET /api/iteminfo/:itemName
  *
  * Returns a items info
  */
 exports.itemInfo = function (req, res, next) {
-  
+
   if (!req.params.hasOwnProperty('itemName'))
     return res.json({ error: 'Invalid search term' });
 
   // Check cache for query
   redis.get('infoCache:' + encodeURIComponent(req.params.itemName), function (err, cachedResults) {
-    
+
     if (err) return next(err);
 
     // Send cached results
@@ -42,18 +64,18 @@ exports.itemInfo = function (req, res, next) {
       return res.json(JSON.parse(cachedResults));
 
     // Get new results from MongoDB
-    Items    
+    Items
       .find({ $text: { $search: req.params.itemName } },
             { score: { $meta: 'textScore' } })
       .sort({ score: { $meta: 'textScore' } })
       .limit(1)
       .exec(function (err, searchResults) {
-    
+
         if (err) return next(err);
 
         // Cache results to redis for 30 minutes
         redis.set('infoCache:' + encodeURIComponent(req.params.itemName), JSON.stringify(searchResults), 'EX', 1800, function (err) {
-          
+
           if (err) return next(err);
 
           return res.json(searchResults);
@@ -72,10 +94,10 @@ exports.itemInfo = function (req, res, next) {
  * Returns the url for a given image hash
  */
 exports.imgHash = function (req, res, next) {
-  
+
   // Search for the imgHash
   redis.get('market:hashes:' + req.params.imgHash, function (err, hash) {
-    
+
     if (err) return next(err);
 
     // No hash found, return a 404
@@ -101,27 +123,27 @@ exports.stats = function (req, res, next) {
 
   // Fetch how many users we're currently tracking
   Users.count(null, function (err, usersCount) {
-  
+
     if (err) return next(err);
 
     // Fetch how many unique items we're tracking
     Items.count(null, function (err, itemsCount) {
-    
+
       if (err) return next(err);
 
       // Count up how many transactions have been recorded
       Currencies.aggregate({ $group: { _id: null, total: { $sum: '$sold' } } }, function (err, transactionsCount) {
-                          
+
         if (err) return next(err);
 
         return res.json({ users: usersCount,
-                          items: itemsCount, 
+                          items: itemsCount,
                           transactions: transactionsCount[0].total });
-      
+
       });
-    
+
     });
-  
+
   });
 
 };
@@ -144,11 +166,11 @@ exports.transactions = function (req, res, next) {
     .sort('-date')
     .limit(20)
     .exec(function (err, usersTransactions) {
-  
+
       if (err) return next(err);
 
       return res.json(usersTransactions);
-  
+
   });
 
 };
@@ -165,11 +187,11 @@ exports.recent = function (req, res, next) {
     .sort('-date')
     .limit(50)
     .exec(function (err, recentTransactions) {
-    
+
       if (err) return next(err);
 
       return res.json(recentTransactions);
-    
+
     });
 
 };
@@ -189,11 +211,11 @@ exports.itemRecent = function (req, res, next) {
     .sort('-date')
     .limit(50)
     .exec(function (err, recentTransactions) {
-    
+
       if (err) return next(err);
 
       return res.json(recentTransactions);
-    
+
     });
 
 };
@@ -212,11 +234,11 @@ exports.appRecent = function (req, res, next) {
     .sort('-date')
     .limit(50)
     .exec(function (err, recentTransactions) {
-    
+
       if (err) return next(err);
 
       return res.json(recentTransactions);
-    
+
     });
 
 };
@@ -233,11 +255,11 @@ exports.topCurrencies = function (req, res, next) {
     .sort('-profit')
     .limit(50)
     .exec(function (err, topCurrencies) {
-    
+
       if (err) return next(err);
 
       return res.json(topCurrencies);
-    
+
     });
 
 };
@@ -254,11 +276,11 @@ exports.topUsers = function (req, res, next) {
     .sort('-profit')
     .limit(50)
     .exec(function (err, topUsers) {
-    
+
       if (err) return next(err);
 
       return res.json(topUsers);
-    
+
     });
 
 };
@@ -275,11 +297,11 @@ exports.topItems = function (req, res, next) {
     .sort('-profit')
     .limit(50)
     .exec(function (err, topItems) {
-    
+
       if (err) return next(err);
 
       return res.json(topItems);
-    
+
     });
 
 };
@@ -296,11 +318,11 @@ exports.topApps = function (req, res, next) {
     .sort('-profit')
     .limit(50)
     .exec(function (err, topApps) {
-    
+
       if (err) return next(err);
 
       return res.json(topApps);
-    
+
     });
 
 };
@@ -320,28 +342,28 @@ exports.profile = function (req, res, next) {
     return res.status(400).json({ error: Utils.msg.INVALID_STEAM_ID });
 
   Users.findById(steamID, function (err, userProfile) {
-  
+
     if (err) return next(err);
 
     /**
      * TODO
      * - Create a proper 404 page for untracked users
      */
-    if (!userProfile) 
+    if (!userProfile)
       return res.status(404).end('User not found');
 
     // Send back valid cached data
-    if ((timeNow - userProfile.cache) < 43200000) 
+    if ((timeNow - userProfile.cache) < 43200000)
       return res.json(userProfile);
 
     // Fetch new data from Steam
     request(API_ENDPOINT + steamID, function (err, response) {
-    
-      if (err || response.statusCode !== 200) 
+
+      if (err || response.statusCode !== 200)
         return next(err);
 
       var apiResponse = response.body;
-    
+
       var updatedProfile = {
 
         username: apiResponse.response.players[0].personaname,
@@ -352,21 +374,21 @@ exports.profile = function (req, res, next) {
 
       // Cache the data returned from Steam
       Users.update({ _id: steamID }, updatedProfile, function (err, profileUpdated) {
-      
+
         if (err) return next(err);
 
-        if (!profileUpdated) 
+        if (!profileUpdated)
           return next(new Error('Error caching Steam profile data'));
 
         userProfile.username = updatedProfile.username;
         userProfile.avatar   = updatedProfile.avatar;
 
         return res.json(userProfile);
-      
+
       });
 
     });
-  
+
   });
 
 };
@@ -383,7 +405,7 @@ exports.searchItem = function (req, res, next) {
 
   // Check cache for query
   redis.get('searchCache:' + encodeURIComponent(req.params.itemName), function (err, cachedResults) {
-    
+
     if (err) return next(err);
 
     // Send cached results
@@ -391,18 +413,18 @@ exports.searchItem = function (req, res, next) {
       return res.json(JSON.parse(cachedResults));
 
     // Get new results from MongoDB
-    Items    
+    Items
     .find({ $text: { $search: req.params.itemName } },
           { score: { $meta: 'textScore' } })
     .sort({ score: { $meta: 'textScore' } })
     .limit(10)
     .exec(function (err, searchResults) {
-    
+
       if (err) return next(err);
 
       // Cache results to redis for 30 minutes
       redis.set('searchCache:' + encodeURIComponent(req.params.itemName), JSON.stringify(searchResults), 'EX', 1800, function (err) {
-        
+
         if (err) return next(err);
 
         return res.json(searchResults);
@@ -421,7 +443,7 @@ exports.searchItem = function (req, res, next) {
  * Returns a currencies (:currencyID) 50 most recent transactions
  */
 exports.currencyRecent = function (req, res, next) {
-  
+
    var currencyID = req.params.currencyID;
 
     Transactions
@@ -429,11 +451,11 @@ exports.currencyRecent = function (req, res, next) {
       .sort('-date')
       .limit(50)
       .exec(function (err, recentTransactions) {
-      
+
         if (err) return next(err);
 
         return res.json(recentTransactions);
-      
+
       });
 
 };

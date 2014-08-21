@@ -93,6 +93,27 @@ MarketApp.controller('IndexCtrl', ['$scope', '$http',
 
   ]);
 
+MarketApp.controller('RecentUsersCtrl', ['$scope', '$http',
+
+  function ($scope, $http) {
+
+    $http.get('/api/recent/users')
+      .success(function (response) {
+
+        $scope.users = response;
+
+      })
+      .error(function () {
+
+        $scope.showError = true;
+        $scope.errorMessage = 'Error loading recently tracked users';
+
+      });
+
+  }
+
+  ]);
+
 MarketApp.controller('UserCtrl', ['$scope', '$http', '$window',
 
   function ($scope, $http, $window) {

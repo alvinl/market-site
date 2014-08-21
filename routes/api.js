@@ -25,7 +25,8 @@ router
   .get('/stats', controller.stats)
   .get('/search/item/:itemName', controller.searchItem)
   .get('/currency/recent/:currencyID', controller.currencyRecent)
-  .get('/iteminfo/:itemName', controller.itemInfo);
+  .get('/iteminfo/:itemName', controller.itemInfo)
+  .get('/recent/users', controller.recentUsers);
 
 /**
  * Export `router`
