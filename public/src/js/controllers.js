@@ -338,30 +338,36 @@ MarketApp.controller('StatsCtrl', ['$scope', '$http', '$window',
 
   function ($scope, $http, $window) {
 
-    var stream;
+    $scope.stats = {};
+
+    if (EventSource) {
+
+      var stream = new EventSource('/api/stats/stream');
+
+      stream.addEventListener('update', function (payload) {
+
+        var statToUpdate = payload.data;
+
+        $scope.$apply(function () {
+
+          $scope.stats[statToUpdate] = $scope.stats.hasOwnProperty(statToUpdate) ?
+                                       $scope.stats[statToUpdate] + 1 :
+                                       1;
+
+        });
+
+      });
+
+    }
 
     $http.get('/api/stats')
       .success(function (response) {
 
-        $scope.stats = response;
-
-        if (EventSource) {
-
-          stream = new EventSource('/api/stats/stream');
-
-          stream.addEventListener('update', function (payload) {
-
-            var statToUpdate = payload.data;
-
-            $scope.$apply(function () {
-
-              $scope.stats[statToUpdate]++;
-
-            });
-
-          });
-
-        }
+        // Apply initial stats
+        for (var initialStat in response)
+          $scope.stats[initialStat] = $scope.stats.hasOwnProperty(initialStat) ?
+                                      $scope.stats[initialStat] + response[initialStat] :
+                                      response[initialStat];
 
       })
       .error(function (err) {
