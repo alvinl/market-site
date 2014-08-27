@@ -225,6 +225,18 @@ body {
 
 }
 
+.stats-title {
+
+  font-size: 2em;
+
+}
+
+.stats-container {
+
+  margin-top: 5%;
+
+}
+
 .stats-container p {
 
   font-size: 15px;

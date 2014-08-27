@@ -153,16 +153,35 @@ exports.stats = function (req, res, next) {
     // Fetch how many unique items we're tracking
     Items.count(null, function (err, itemsCount) {
 
-      if (err) return next(err);
+      if (err)
+        return next(err);
 
-      // Count up how many transactions have been recorded
-      Currencies.aggregate({ $group: { _id: null, total: { $sum: '$sold' } } }, function (err, transactionsCount) {
+      // Fetch how many apps we're tracking
+      Apps.count(null, function (err, appsCount) {
 
-        if (err) return next(err);
+        if (err)
+          return next(err);
 
-        return res.json({ users: usersCount,
-                          items: itemsCount,
-                          transactions: transactionsCount[0].total });
+        Currencies.count(null, function (err, currenciesCount) {
+
+          if (err)
+            return next(err);
+
+          // Count up how many transactions have been recorded
+          Currencies.aggregate({ $group: { _id: null, total: { $sum: '$sold' } } }, function (err, transactionsCount) {
+
+            if (err)
+              return next(err);
+
+            return res.json({ currencies:   currenciesCount,
+                              users:        usersCount,
+                              items:        itemsCount,
+                              apps:         appsCount,
+                              transactions: transactionsCount[0].total });
+
+          });
+
+        });
 
       });
 

@@ -2,9 +2,9 @@ extends layout
 
 block content
   div.container(ng-controller='StatsCtrl')
-    h1.lead.text-center(style='font-size:2em;') Open market stats
+    h1.lead.text-center.stats-title Open market stats
     hr
-    div.row.stats-container(style='margin-top:5%;')
+    div.row.stats-container
       div.col-md-2.col-md-offset-3.text-center
         h2(ng-cloak) {{ stats.users | commaSeperate }}
         p Users recorded
@@ -14,3 +14,10 @@ block content
       div.col-md-2.text-center
         h2(ng-cloak) {{ stats.items | commaSeperate }}
         p Unique items recorded
+    div.row.stats-container
+      div.col-md-2.text-center.col-md-offset-4
+        h2(ng-cloak) {{ stats.apps | commaSeperate }}
+        p Games recorded
+      div.col-md-2.text-center
+        h2(ng-cloak) {{ stats.currencies | commaSeperate }}
+        p Currencies recorded
