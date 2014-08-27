@@ -224,3 +224,10 @@ body {
   background-color: #F7F7F7;
 
 }
+
+.stats-container p {
+
+  font-size: 15px;
+  color: #525151;
+
+}

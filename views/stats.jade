@@ -2,15 +2,15 @@ extends layout
 
 block content
   div.container(ng-controller='StatsCtrl')
-    h1.lead Stats
+    h1.lead.text-center(style='font-size:2em;') Open market stats
     hr
-    div.row
-      div.col-md-2
-        h3 Tracked users
-        p(ng-cloak) {{ stats.users | commaSeperate }}
-      div.col-md-3
-        h3 Transactions recorded
-        p(ng-cloak) {{ stats.transactions | commaSeperate }}
-      div.col-md-3
-        h3 Tracked items (unique)
-        p(ng-cloak) {{ stats.items | commaSeperate }}
+    div.row.stats-container(style='margin-top:5%;')
+      div.col-md-2.col-md-offset-3.text-center
+        h2(ng-cloak) {{ stats.users | commaSeperate }}
+        p Users recorded
+      div.col-md-2.text-center
+        h2(ng-cloak) {{ stats.transactions | commaSeperate }}
+        p Transactions recorded
+      div.col-md-2.text-center
+        h2(ng-cloak) {{ stats.items | commaSeperate }}
+        p Unique items recorded
