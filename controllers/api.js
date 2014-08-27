@@ -6,7 +6,10 @@
 var mongoose     = require('mongoose'),
     config       = require('../config'),
     Utils        = require('../lib/utils'),
+    sseStreamer  = require('sse-streamer'),
     request      = require('request').defaults({ json: true }),
+    sub          = require('redis').createClient(config.REDIS.port,
+                                                  config.REDIS.host),
     redis        = require('redis').createClient(config.REDIS.port,
                                                   config.REDIS.host);
 
@@ -21,6 +24,40 @@ var Transactions = mongoose.model('market_transactions'),
     Users        = mongoose.model('market_users'),
     Items        = mongoose.model('market_items'),
     Apps         = mongoose.model('market_apps');
+
+/**
+ * Subscribe to stat events
+ */
+
+sub.subscribe('transactions', 'items', 'users');
+
+/**
+ * GET /api/stats/stream
+ *
+ * Returns a SSE stream for site stats
+ */
+
+exports.statsStream = function (req, res) {
+
+  var stream = new sseStreamer(req, res);
+
+  var sendUpdate = function (channel) {
+
+    stream.send({ data: channel, event: 'update' });
+
+  };
+
+  // Remove listener after the client disconnects
+  req.on('close', function () {
+
+    sub.removeListener('message', sendUpdate);
+
+  });
+
+  // Send the client an update when a new stat is received
+  sub.on('message', sendUpdate);
+
+};
 
 /**
  * GET /api/recent/users

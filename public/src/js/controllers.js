@@ -338,10 +338,30 @@ MarketApp.controller('StatsCtrl', ['$scope', '$http', '$window',
 
   function ($scope, $http, $window) {
 
+    var stream;
+
     $http.get('/api/stats')
       .success(function (response) {
 
         $scope.stats = response;
+
+        if (EventSource) {
+
+          stream = new EventSource('/api/stats/stream');
+
+          stream.addEventListener('update', function (payload) {
+
+            var statToUpdate = payload.data;
+
+            $scope.$apply(function () {
+
+              $scope.stats[statToUpdate]++;
+
+            });
+
+          });
+
+        }
 
       })
       .error(function (err) {
