@@ -340,7 +340,7 @@ MarketApp.controller('StatsCtrl', ['$scope', '$http', '$window',
 
     $scope.stats = {};
 
-    if (EventSource) {
+    if (!!window.EventSource) {
 
       var stream = new EventSource('/api/stats/stream');
 
